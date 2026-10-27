@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  background: #111111;
+  color: #ffffff;
+}
+
+/* Header and button fade in after the intro animation (~2.4s) */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: none; }
+}
+.fade-up   { animation: fadeUp 0.9s ease 2.4s both; }
+.fade-down { animation: fadeDown 0.8s ease 2.6s both; }
+
+/* Shine sweep across the Get Started button on hover */
+.shine {
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(110deg, transparent 30%, rgba(0, 0, 0, 0.12) 50%, transparent 70%);
+  transition: transform 0.7s ease;
+}
+.group:hover .shine {
+  transform: translateX(120%);
+}
+
+/* Header links: regular by default, bold + glow on hover */
+.nav-glow {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 400;
+  color: #a3a3a3;
+  outline: none;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+.nav-glow:hover,
+.nav-glow:focus-visible {
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 40px rgba(255, 255, 255, 0.3);
+}
+/* Invisible bold copy of the text reserves space, so links don't shift on hover */
+.nav-glow::after {
+  content: attr(data-text);
+  font-weight: 700;
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Respect users who turn off animations in their system settings */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up, .fade-down { animation: none; }
+}
