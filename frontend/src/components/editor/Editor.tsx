@@ -90,6 +90,17 @@ export default function Editor({ initial, suggestedSlug }: { initial: Initial; s
     return () => window.removeEventListener("beforeunload", warn)
   }, [saveState])
 
+    // Apply ?template=<id> coming from the Templates page, then clean the URL
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("template")
+    if (!requested) return
+    if (templateMeta.some((t) => t.id === requested) && requested !== initial.templateId) {
+      updateTemplate(requested) // also queues an autosave
+    }
+    window.history.replaceState(null, "", window.location.pathname)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // ---------- Helpers for editing fields and lists ----------
   const set = <K extends keyof Portfolio>(key: K, value: Portfolio[K]) => updateData({ ...data, [key]: value })
   const setLink = (key: keyof Portfolio["links"], value: string) =>
