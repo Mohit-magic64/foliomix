@@ -1,6 +1,6 @@
-import type { Portfolio } from "@/lib/portfolio"
+import type { Portfolio, SectionId } from "@/lib/portfolio"
 
-export type TemplateProps = { data: Portfolio }
+export type TemplateProps = { data: Portfolio ; sections?: SectionId[]}
 
 export const categories = ["All", "Minimal", "Creative", "Editorial", "Developer"] as const
 export type Category = (typeof categories)[number]

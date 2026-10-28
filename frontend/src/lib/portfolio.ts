@@ -188,8 +188,48 @@ export const FONT_OPTIONS = [
 
 export type FontId = (typeof FONT_OPTIONS)[number]["id"]
 
+// ---------- Page sections: order and visibility ----------
+export const SECTION_IDS = ["about", "projects", "skills", "experience", "education", "contact"] as const
+export type SectionId = (typeof SECTION_IDS)[number]
+export type SectionSetting = { id: SectionId; visible: boolean }
+export const DEFAULT_SECTION_ORDER: SectionId[] = [...SECTION_IDS]
+
+export const SECTION_LABELS: Record<SectionId, string> = {
+  about: "About",
+  projects: "Projects",
+  skills: "Skills",
+  experience: "Experience",
+  education: "Education",
+  contact: "Contact",
+}
+
+// Cleans a saved list and adds any missing sections, so the list is always complete
+export function resolveSections(saved?: { id: string; visible?: boolean }[]): SectionSetting[] {
+  const valid: readonly string[] = SECTION_IDS
+  const out: SectionSetting[] = []
+  for (const s of saved ?? []) {
+    if (valid.includes(s.id) && !out.some((o) => o.id === s.id)) {
+      out.push({ id: s.id as SectionId, visible: s.visible !== false })
+    }
+  }
+  for (const id of SECTION_IDS) {
+    if (!out.some((o) => o.id === id)) out.push({ id, visible: true })
+  }
+  return out
+}
+
+// Just the visible section ids, in order — this is what templates receive
+export function visibleSections(saved?: SectionSetting[]): SectionId[] {
+  return resolveSections(saved).filter((s) => s.visible).map((s) => s.id)
+}
+
 // ---------- Theme: the user's style choices ----------
-export type Theme = { headingFont?: FontId; bodyFont?: FontId; accent?: string }
+export type Theme = {
+  headingFont?: FontId
+  bodyFont?: FontId
+  accent?: string
+  sections?: SectionSetting[]
+}
 
 export function normalizeTheme(raw: unknown): Theme {
   const r = isObj(raw) ? raw : {}
@@ -197,9 +237,11 @@ export function normalizeTheme(raw: unknown): Theme {
   const font = (v: unknown) => (typeof v === "string" && ids.includes(v) ? (v as FontId) : undefined)
   const accent =
     typeof r.accent === "string" && /^#[0-9a-f]{6}$/i.test(r.accent) ? r.accent : undefined
-  return { headingFont: font(r.headingFont), bodyFont: font(r.bodyFont), accent }
+  const sections = Array.isArray(r.sections)
+    ? resolveSections(r.sections.filter(isObj).map((s) => ({ id: String(s.id), visible: s.visible !== false })))
+    : undefined
+  return { headingFont: font(r.headingFont), bodyFont: font(r.bodyFont), accent, sections }
 }
-
 // ---------- Public links (slugs) ----------
 const RESERVED_SLUGS = [
   "api", "admin", "app", "auth", "about", "dashboard", "editor",

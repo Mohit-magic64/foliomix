@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react"
 import { templateComponents } from "./registry"
 import { fontFamilies } from "@/lib/fonts"
-import type { Portfolio, Theme } from "@/lib/portfolio"
+import { visibleSections, type Portfolio, type Theme } from "@/lib/portfolio"
 
 export default function RenderPortfolio({
   templateId,
@@ -29,7 +29,7 @@ export default function RenderPortfolio({
       data-body={body ? "" : undefined}
       style={style}
     >
-      <Template data={data} />
+      <Template data={data} sections={visibleSections(theme.sections)} />
     </div>
   )
 }

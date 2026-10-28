@@ -16,6 +16,7 @@ import {
   type Theme,
 } from "@/lib/portfolio"
 import LivePreview from "./LivePreview"
+import SectionsPanel from "./SectionsPanel"
 import { AddButton, Field, ItemCard, Section, TagInput, TextArea } from "./fields"
 
 type Initial = { data: Portfolio; theme: Theme; templateId: string; slug: string | null; published: boolean }
@@ -27,7 +28,7 @@ export default function Editor({ initial, suggestedSlug }: { initial: Initial; s
   const [data, setData] = useState(initial.data)
   const [theme, setTheme] = useState(initial.theme)
   const [templateId, setTemplateId] = useState(initial.templateId)
-  const [tab, setTab] = useState<"content" | "style">("content")
+  const [tab, setTab] = useState<"content" | "sections" | "style">("content")
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop")
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit")
   const [saveState, setSaveState] = useState<SaveState>("saved")
@@ -320,7 +321,7 @@ export default function Editor({ initial, suggestedSlug }: { initial: Initial; s
           className={`${mobileView === "edit" ? "flex" : "hidden"} w-full flex-col border-r border-white/10 lg:flex lg:w-[400px] lg:shrink-0`}
         >
           <div className="flex shrink-0 border-b border-white/10">
-            {(["content", "style"] as const).map((t) => (
+             {(["content", "sections", "style"] as const).map((t) => (
               <button
                 key={t}
                 type="button"
@@ -333,7 +334,15 @@ export default function Editor({ initial, suggestedSlug }: { initial: Initial; s
               </button>
             ))}
           </div>
-          <div className="flex-1 overflow-y-auto">{tab === "content" ? contentPanel : stylePanel}</div>
+                   <div className="flex-1 overflow-y-auto">
+            {tab === "content" ? (
+              contentPanel
+            ) : tab === "sections" ? (
+              <SectionsPanel data={data} theme={theme} onChange={updateTheme} />
+            ) : (
+              stylePanel
+            )}
+          </div>
         </aside>
 
         <div className={`${mobileView === "preview" ? "block" : "hidden"} relative min-w-0 flex-1 bg-[#0c0c0c] lg:block`}>
