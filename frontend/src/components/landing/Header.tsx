@@ -10,11 +10,11 @@ const links = [
   { href: "/login", label: "Log in" },
 ]
 
-export default function Header() {
+export default function Header({ animate = true }: { animate?: boolean })  {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="fade-down absolute inset-x-0 top-0 z-20">
+    <header className={`${animate ? "fade-down " : ""}absolute inset-x-0 top-0 z-20`}>
       <nav className="mx-auto flex max-w-6xl items-center justify-end px-6 py-6 md:justify-center">
         <div className="hidden items-center gap-14 md:flex">
           {links.map((l) => (

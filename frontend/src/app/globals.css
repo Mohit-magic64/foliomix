@@ -64,3 +64,38 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .fade-up, .fade-down { animation: none; }
 }
+/* Dotted grid background — echoes the dotted wordmark */
+.dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.dot-grid-fade {
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+}
+
+/* Headline that fades from white to grey */
+.text-fade {
+  background: linear-gradient(to bottom, #ffffff 40%, #6b6b6b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Cards lift and glow on hover */
+.card-glow {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card-glow:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.07);
+  transform: translateY(-4px);
+}
+/* User-chosen fonts from the editor override the template's fonts */
+.fm-theme[data-body],
+.fm-theme[data-body] * {
+  font-family: var(--fm-body) !important;
+}
+.fm-theme[data-heading] :is(h1, h2, h3) {
+  font-family: var(--fm-heading) !important;
+}
