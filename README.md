@@ -5,7 +5,7 @@
 Foliomix turns your GitHub profile or resume into a polished personal portfolio website. Import your work, pick a template, edit with a live preview, and publish to a shareable link in one click. No code, no design skills, no hosting setup.
 
 🔗 **Live app:** [foliomix.vercel.app](https://foliomix.vercel.app)
-🎯 **Sample portfolio:**
+🎯 **Sample portfolio:** (https://foliomix.vercel.app/p/mohit-magic64)
 
 Built for **Problem Statement 5: Portfolio Site Builder** (Programming Club, IIT Indore, Software Division induction).
 
